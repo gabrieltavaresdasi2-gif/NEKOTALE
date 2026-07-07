@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nekotale - Mangás, HQs & Livros</title>
+    <style>
+        /* ==========================================================================
+           1. CONFIGURAÇÕES GERAIS E CORES (TEMA ROXO/DARK PREMIUM)
+           ========================================================================== */
+        :root {
+            --bg-main: #0c0c12;          
+            --bg-card: #141424;          
+            --bg-input: #1d1d36;         
+            --primary: #9d4edd;          
+            --primary-hover: #7b2cbf;    
+            --border: #24243e;           
+            --text: #ffffff;             
+            --text-muted: #9fa0c3;       
+            --info: #00b4d8;
+            --success: #2a9d8f;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ==========================================================================
+           2. BARRA SUPERIOR FIXA (ESTILO WATTPAD)
+           ========================================================================== */
+        .app-header {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .header-esquerda h1 {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 0 0 10px rgba(157, 78, 221, 0.4);
+        }
+
+        .header-centro {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 20px;
+        }
+
+        .barra-pesquisa-topo {
+            width: 100%;
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-input);
+            color: var(--text);
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+
+        .header-direita {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           3. SISTEMA DE ABAS EM CSS PURO (SEM JAVASCRIPT)
+           ========================================================================== */
+        .tab-input {
+            display: none;
+        }
+
+        .tabs-nav {
+            display: flex;
+            justify-content: center;
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .tab-label {
+            padding: 15px 30px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-muted);
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab-label:hover {
+            color: var(--text);
+        }
+
+        .tabs-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        /* Ativação das abas usando seletores CSS */
+        #tab1:checked ~ .tabs-nav label[for="tab1"],
+        #tab2:checked ~ .tabs-nav label[for="tab2"],
+        #tab3:checked ~ .tabs-nav label[for="tab3"] {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        #tab1:checked ~ .tabs-content #panel1,
+        #tab2:checked ~ .tabs-content #panel2,
+        #tab3:checked ~ .tabs-content #panel3 {
+            display: block;
+        }
+
+        /* ==========================================================================
+           4. VISUAL DOS CARD-PAINÉIS E FORMULÁRIOS
+           ========================================================================== */
+        .card-painel {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .card-painel h2 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-top: 0;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .form-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 600px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-input);
+            color: var(--text);
+            font-size: 0.9rem;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .instrucao-imagem {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: rgba(157, 78, 221, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        /* Botões Formato Pílula */
+        .btn-fake {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 11px 28px;
+            border-radius: 999px;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            font-size: 0.9rem;
+        }
+
+        .btn-fake:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* ==========================================================================
+           5. ESTANTE DE LIVROS VERTICAIS (VITRINE ESTILO WATTPAD)
+           ========================================================================== */
+        .vitrine {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+            gap: 30px;
+            margin-top: 15px;
+        }
+
+        .card-livro {
+            background-color: transparent;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .capa-container {
+            height: 250px;              
+            width: 100%;
+            background: linear-gradient(135deg, #1d1d36 0%, #111124 100%);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.2s, border-color 0.2s;
+            margin-bottom: 12px;
+        }
+
+        .card-livro:hover .capa-container {
+            transform: translateY(-5px); 
+            border-color: var(--primary);
+        }
+
+        .capa-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-livro h3 {
+            margin: 4px 0 2px 0;
+            font-size: 1rem;
+            font-weight: 700;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .card-livro p {
+            margin: 0 0 10px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .tag-tipo {
+            font-size: 9px;
+            font-weight: 800;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            background-color: #0077b6;
+            display: inline-block;
+            margin-bottom: 5px;
+            width: fit-content;
+        }
+
+        /* ==========================================================================
+           6. FEED E SISTEMA DO BOT INTELIGENTE (CSS PURO)
+           ========================================================================== */
+        .bot-container {
+            background: #161224;
+            border: 1px solid #4a148c;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .bot-header {
+            font-weight: bold;
+            color: var(--info);
+            margin-bottom: 15px;
+        }
+
+        .bot-radio {
+            display: none;
+        }
+
+        .bot-comandos {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .btn-comando {
+            background-color: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+
+        .btn-comando:hover {
+            border-color: var(--info);
+            background-color: rgba(0, 191, 255, 0.1);
+        }
+
+        .bot-resposta {
+            background-color: #0b0b14;
+            border-left: 4px solid var(--info);
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .chat-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--success);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .chat-status .ponto-online {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 8px var(--success);
+        }
+
+        .chat-atalhos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .atalho-bot {
+            background: var(--bg-input);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-size: 0.85rem;
+        }
+
+        .atalho-bot:hover {
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .chat-mensagens {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 260px;
+            overflow-y: auto;
+            padding-right: 6px;
+            margin-bottom: 12px;
+        }
+
+        .msg {
+            max-width: 82%;
+            padding: 10px 12px;
+            border-radius: 12px;
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+        }
+
+        .msg-bot {
+            align-self: flex-start;
+            background: #0b0b14;
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .msg-bot.typing {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .chat-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-form input {
+            flex: 1;
+        }
+
+        /* Seleção lógica de respostas do bot via CSS */
+    /* Estilos que ativam respostas do bot e animação */
+    #bot-cmd1:checked ~ .bot-respostas #resp1,
+    #bot-cmd2:checked ~ .bot-respostas #resp2,
+    #bot-cmd3:checked ~ .bot-respostas #resp3 {
+        display: block;
+        animation: surgir 0.3s ease-out;
+    }
+
+    @keyframes surgir {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feed {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .post {
+        background-color: var(--bg-input);
+        padding: 15px;
+        border-radius: 10px;
+        border-left: 4px solid var(--primary);
+    }
+
+    .post-header {
+        font-size: 0.85rem;
+        color: var(--primary);
+        margin-bottom: 8px;
+    }
+
+    .post-arte {
+        max-width: 300px;
+        border-radius: 8px;
+        margin-top: 10px;
+        border: 1px solid var(--border);
+    }
+
+    .comentario-lista {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    .comentario-item {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 14px;
+    }
+
+    .comentario-item strong {
+        color: var(--primary);
+    }
+
+    .comentario-item small {
+        color: var(--text-muted);
+        display: block;
+        margin-top: 6px;
+    }
+
+    .mensagem-status {
+        margin-top: 8px;
+        color: var(--success);
+        font-size: 0.9rem;
+    }
+
+    .lista-assinantes {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .assinante-item {
+        background: rgba(157, 78, 221, 0.12);
+        border: 1px solid rgba(157, 78, 221, 0.25);
+        padding: 10px 12px;
+        border-radius: 8px;
+        color: var(--text-muted);
+    }
+    </style>
+
+<body>
+    <input type="radio" id="tab1" class="tab-input" name="tabs" checked>
+    <input type="radio" id="tab2" class="tab-input" name="tabs">
+    <input type="radio" id="tab3" class="tab-input" name="tabs">
+
+    <header class="app-header">
+        <div class="header-esquerda">
+            <h1>Nekotale</h1>
+        </div>
+        <div class="header-centro">
+            <input class="barra-pesquisa-topo" type="text" placeholder="Pesquisar mangás, HQs e livros...">
+        </div>
+        <div class="header-direita">
+            Bem-vindo · Coleção em destaque
+        </div>
+    </header>
+
+    <nav class="tabs-nav">
+        <label class="tab-label" for="tab1">Início</label>
+        <label class="tab-label" for="tab2">Cadastrar</label>
+        <label class="tab-label" for="tab3">Bot</label>
+    </nav>
+
+    <div class="tabs-content">
+        <section id="panel1" class="tab-panel">
+            <div class="card-painel">
+                <h2>Descubra obras incríveis</h2>
+                <p class="instrucao-imagem">Sua vitrine está pronta para mostrar mangás, HQs e livros com uma aparência elegante.</p>
+                <div class="vitrine">
+                    <article class="card-livro">
+                        <div class="capa-container">
+                            <div style="text-align:center; color:#fff; padding:16px;">
+                                <strong>Chainsaw Man</strong><br>
+                                <span style="font-size:0.8rem; color:#9fa0c3;">Mangá</span>
+                            </div>
+                        </div>
+                        <h3>Chainsaw Man</h3>
+                        <p> Tatsuki Fujimoto</p>
+                        <span class="tag-tipo">Mangá</span>
+                    </article>
+
+                    <article class="card-livro">
+                        <div class="capa-container">
+                            <div style="text-align:center; color:#fff; padding:16px;">
+                                <strong>Watchmen</strong><br>
+                                <span style="font-size:0.8rem; color:#9fa0c3;">HQ</span>
+                            </div>
+                        </div>
+                        <h3>Watchmen</h3>
+                        <p>Alan Moore</p>
+                        <span class="tag-tipo">HQ</span>
+                    </article>
+
+                    <article class="card-livro">
+                        <div class="capa-container">
+                            <div style="text-align:center; color:#fff; padding:16px;">
+                                <strong>O Hobbit</strong><br>
+                                <span style="font-size:0.8rem; color:#9fa0c3;">Livro</span>
+                            </div>
+                        </div>
+                        <h3>O Hobbit</h3>
+                        <p>J. R. R. Tolkien</p>
+                        <span class="tag-tipo">Livro</span>
+                    </article>
+                </div>
+            </div>
+
+            <div class="card-painel">
+                <h2>Comentários da comunidade</h2>
+                <form id="form-comentario" class="form-grid">
+                    <input type="text" id="nome-comentario" placeholder="Seu nome" required>
+                    <textarea id="texto-comentario" placeholder="Escreva seu comentário..." required></textarea>
+                    <button class="btn-fake" type="submit">Publicar comentário</button>
+                    <p class="mensagem-status" id="status-comentario"></p>
+                </form>
+                <div id="lista-comentarios" class="comentario-lista"></div>
+            </div>
+        </section>
+
+        <section id="panel2" class="tab-panel">
+            <div class="card-painel">
+                <h2>Cadastrar nova obra</h2>
+                <form class="form-grid">
+                    <input type="text" placeholder="Título da obra">
+                    <select>
+                        <option>Selecione o tipo</option>
+                        <option>Mangá</option>
+                        <option>HQ</option>
+                        <option>Livro</option>
+                    </select>
+                    <input type="text" placeholder="Autor">
+                    <textarea placeholder="Resumo ou observações"></textarea>
+                    <button class="btn-fake" type="button">Salvar obra</button>
+                </form>
+            </div>
+
+            <div class="card-painel">
+                <h2>Cadastre-se com e-mail</h2>
+                <form id="form-cadastro" class="form-grid">
+                    <input type="text" id="nome-cadastro" placeholder="Seu nome" required>
+                    <input type="email" id="email-cadastro" placeholder="Seu e-mail" required>
+                    <button class="btn-fake" type="submit">Quero participar</button>
+                    <p class="mensagem-status" id="status-cadastro"></p>
+                </form>
+                <div id="lista-assinantes" class="lista-assinantes"></div>
+            </div>
+        </section>
+
+        <section id="panel3" class="tab-panel">
+            <div class="card-painel">
+                <h2>Bot online</h2>
+                <div class="chat-status">
+                    <span class="ponto-online"></span>
+                    Online agora · respondendo como se fosse um assistente real
+                </div>
+
+                <div class="chat-atalhos">
+                    <button class="atalho-bot" type="button" data-comando="oi">Oi</button>
+                    <button class="atalho-bot" type="button" data-comando="recomende um mangá">Recomendar manga</button>
+                    <button class="atalho-bot" type="button" data-comando="quero novidades">Novidades</button>
+                </div>
+
+                <div id="chat-mensagens" class="chat-mensagens">
+                    <div class="msg msg-bot">Olá! Eu sou o Nekobot. Pode falar comigo como se fosse uma conversa online.</div>
+                </div>
+
+                <form id="form-chat" class="chat-form">
+                    <input id="input-chat" type="text" placeholder="Escreva aqui..." required>
+                    <button class="btn-fake" type="submit">Enviar</button>
+                </form>
+            </div>
+
+            <div class="card-painel">
+                <h2>Feed da comunidade</h2>
+                <div class="feed">
+                    <div class="post">
+                        <div class="post-header">@nina · 10 min atrás</div>
+                        <div>Acabei de organizar minha coleção de mangás shonen.</div>
+                    </div>
+                    <div class="post">
+                        <div class="post-header">@kaito · 1h atrás</div>
+                        <div>Recomendo “V de Vingança” para quem curte histórias sombrias.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+<script>
+    const STORAGE_COMMENTS_KEY = 'nekotale-comments';
+    const STORAGE_SUBSCRIBERS_KEY = 'nekotale-subscribers';
+    const STORAGE_CHAT_KEY = 'nekotale-chat';
+
+    function lerLocalStorage(chave, fallback) {
+        try {
+            const valor = localStorage.getItem(chave);
+            return valor ? JSON.parse(valor) : fallback;
+        } catch (erro) {
+            return fallback;
+        }
+    }
+
+    function salvarLocalStorage(chave, valor) {
+        localStorage.setItem(chave, JSON.stringify(valor));
+    }
+
+    function renderizarComentarios() {
+        const lista = document.getElementById('lista-comentarios');
+        if (!lista) return;
+        const comentarios = lerLocalStorage(STORAGE_COMMENTS_KEY, [
+            { nome: 'Nina', texto: 'Adorei a ideia de reunir mangás, HQs e livros em um só lugar.', data: 'há pouco' },
+            { nome: 'Kaito', texto: 'Estou esperando por mais obras e novidades no feed.', data: 'ontem' }
+        ]);
+
+        if (!comentarios.length) {
+            lista.innerHTML = '<div class="comentario-item">Seja o primeiro a comentar.</div>';
+            return;
+        }
+
+        lista.innerHTML = comentarios.map((comentario) => `
+            <div class="comentario-item">
+                <strong>${comentario.nome}</strong>
+                <div>${comentario.texto}</div>
+                <small>${comentario.data}</small>
+            </div>
+        `).join('');
+    }
+
+    function renderizarAssinantes() {
+        const lista = document.getElementById('lista-assinantes');
+        if (!lista) return;
+        const assinantes = lerLocalStorage(STORAGE_SUBSCRIBERS_KEY, []);
+
+        if (!assinantes.length) {
+            lista.innerHTML = '<div class="assinante-item">Ainda não há inscritos.</div>';
+            return;
+        }
+
+        lista.innerHTML = assinantes.map((assinante) => `
+            <div class="assinante-item">${assinante.nome} · ${assinante.email}</div>
+        `).join('');
+    }
+
+    function obterRespostaBot(texto) {
+        const mensagem = texto.toLowerCase();
+
+        if (mensagem.includes('oi') || mensagem.includes('olá') || mensagem.includes('ola')) {
+            return 'Olá! Eu estou online e posso te ajudar a descobrir obras, novidades e até te indicar um bom mangá.';
+        }
+
+        if (mensagem.includes('mang') || mensagem.includes('recomend')) {
+            return 'Claro! Eu recomendo Chainsaw Man, Berserk e Blue Lock para quem gosta de histórias intensas.';
+        }
+
+        if (mensagem.includes('nov') || mensagem.includes('lanç')) {
+            return 'Temos novidades em mangás shonen e em HQs de fantasia. Quer que eu te mostre alguma opção agora?';
+        }
+
+        if (mensagem.includes('ajuda') || mensagem.includes('como')) {
+            return 'Posso te ajudar a navegar pela coleção, recomendar obras ou explicar as novidades da Nekotale.';
+        }
+
+        if (mensagem.includes('cad') || mensagem.includes('email')) {
+            return 'Você pode se cadastrar na aba Cadastrar com seu nome e e-mail para participar da comunidade.';
+        }
+
+        return 'Entendi. Posso recomendar um mangá, falar das novidades ou te ajudar a explorar a coleção.';
+    }
+
+    function renderizarChat() {
+        const container = document.getElementById('chat-mensagens');
+        if (!container) return;
+        const mensagens = lerLocalStorage(STORAGE_CHAT_KEY, []);
+
+        container.innerHTML = mensagens.map((msg) => `
+            <div class="msg ${msg.remetente === 'user' ? 'msg-user' : 'msg-bot'}">${msg.texto}</div>
+        `).join('');
+
+        container.scrollTop = container.scrollHeight;
+    }
+
+    function salvarMensagemChat(remetente, texto) {
+        const mensagens = lerLocalStorage(STORAGE_CHAT_KEY, []);
+        mensagens.push({ remetente, texto });
+        salvarLocalStorage(STORAGE_CHAT_KEY, mensagens);
+        renderizarChat();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        renderizarComentarios();
+        renderizarAssinantes();
+        renderizarChat();
+
+        const formComentario = document.getElementById('form-comentario');
+        const statusComentario = document.getElementById('status-comentario');
+        if (formComentario && statusComentario) {
+            formComentario.addEventListener('submit', (evento) => {
+                evento.preventDefault();
+                const nome = document.getElementById('nome-comentario').value.trim();
+                const texto = document.getElementById('texto-comentario').value.trim();
+
+                if (!nome || !texto) {
+                    statusComentario.textContent = 'Preencha nome e comentário para publicar.';
+                    return;
+                }
+
+                const comentarios = lerLocalStorage(STORAGE_COMMENTS_KEY, []);
+                comentarios.unshift({
+                    nome,
+                    texto,
+                    data: 'agora'
+                });
+                salvarLocalStorage(STORAGE_COMMENTS_KEY, comentarios);
+                formComentario.reset();
+                statusComentario.textContent = 'Comentário publicado com sucesso!';
+                renderizarComentarios();
+            });
+        }
+
+        const formCadastro = document.getElementById('form-cadastro');
+        const statusCadastro = document.getElementById('status-cadastro');
+        if (formCadastro && statusCadastro) {
+            formCadastro.addEventListener('submit', (evento) => {
+                evento.preventDefault();
+                const nome = document.getElementById('nome-cadastro').value.trim();
+                const email = document.getElementById('email-cadastro').value.trim();
+
+                if (!nome || !email) {
+                    statusCadastro.textContent = 'Preencha seu nome e e-mail.';
+                    return;
+                }
+
+                const assinantes = lerLocalStorage(STORAGE_SUBSCRIBERS_KEY, []);
+                const jaExiste = assinantes.some((item) => item.email.toLowerCase() === email.toLowerCase());
+
+                if (jaExiste) {
+                    statusCadastro.textContent = 'Este e-mail já está cadastrado.';
+                    return;
+                }
+
+                assinantes.unshift({ nome, email });
+                salvarLocalStorage(STORAGE_SUBSCRIBERS_KEY, assinantes);
+                formCadastro.reset();
+                statusCadastro.textContent = 'Cadastro realizado com sucesso!';
+                renderizarAssinantes();
+            });
+        }
+
+        const formChat = document.getElementById('form-chat');
+        const inputChat = document.getElementById('input-chat');
+        if (formChat && inputChat) {
+            formChat.addEventListener('submit', (evento) => {
+                evento.preventDefault();
+                const texto = inputChat.value.trim();
+                if (!texto) return;
+
+                salvarMensagemChat('user', texto);
+                inputChat.value = '';
+
+                const container = document.getElementById('chat-mensagens');
+                if (container) {
+                    const digitando = document.createElement('div');
+                    digitando.className = 'msg msg-bot typing';
+                    digitando.textContent = 'Nekobot está digitando...';
+                    container.appendChild(digitando);
+                    container.scrollTop = container.scrollHeight;
+                }
+
+                setTimeout(() => {
+                    const mensagens = lerLocalStorage(STORAGE_CHAT_KEY, []);
+                    const ultima = mensagens[mensagens.length - 1];
+                    if (ultima && ultima.remetente === 'user' && ultima.texto === texto) {
+                        const resposta = obterRespostaBot(texto);
+                        salvarMensagemChat('bot', resposta);
+                    }
+                }, 700);
+            });
+
+            document.querySelectorAll('.atalho-bot').forEach((botao) => {
+                botao.addEventListener('click', () => {
+                    inputChat.value = botao.dataset.comando;
+                    formChat.requestSubmit();
+                });
+            });
+        }
+    });
+</script>
+</body>
+</html>
